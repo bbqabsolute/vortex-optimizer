@@ -9,6 +9,18 @@
 
 ---
 
+## 📥 Скачать VORTEX v1.0.0
+
+| Файл | Описание | Ссылка на скачивание |
+| :--- | :--- | :--- |
+| 🚀 **VORTEX_Setup.exe** | Автоматический установщик с созданием ярлыков | [**Скачать Setup.exe**](https://github.com/bbqabsolute/vortex-optimizer/releases/download/v1.0.0/VORTEX_Setup.exe) |
+| ⚡ **VORTEX.exe** | Портативная версия (не требует установки) | [**Скачать Portable.exe**](https://github.com/bbqabsolute/vortex-optimizer/releases/download/v1.0.0/VORTEX.exe) |
+| 📦 **VORTEX_v1.0.0_Portable.zip** | Полный архив (программа + иконки + ридми) | [**Скачать ZIP-архив**](https://github.com/bbqabsolute/vortex-optimizer/releases/download/v1.0.0/VORTEX_v1.0.0_Portable.zip) |
+
+👉 Все релизы доступны на странице: [**Releases**](https://github.com/bbqabsolute/vortex-optimizer/releases)
+
+---
+
 ## 🌟 Ключевые возможности
 
 ### ⏱️ Аппаратное снижение задержек (Input Lag)
