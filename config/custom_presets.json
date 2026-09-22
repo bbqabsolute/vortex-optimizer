@@ -1,0 +1,39 @@
+{
+  "CUSTOM_12": {
+    "name": "⭐ 12",
+    "full_name": "⭐ 12",
+    "code": "CUSTOM_12",
+    "desc": "Пользовательский пресет (создан 19.09.2026 22:13)",
+    "accent": "#00F0FF",
+    "is_builtin": false,
+    "created": "19.09.2026 22:13",
+    "settings": {
+      "FPS_BOOST": "1",
+      "VISUAL_EFFECTS": "0",
+      "DISABLE_DVRGAME": "1",
+      "POWER_PLAN": "1",
+      "HAGS_DISABLE": "1",
+      "HIGH_PRIORITY": "1",
+      "NETWORK_BOOST": "1",
+      "NAGLE_OFF": "1",
+      "DNS_OPTIMIZE": "1",
+      "DNS_PRIMARY": "1.1.1.1",
+      "DNS_SECONDARY": "1.0.0.1",
+      "CPU_UNPARK": "1",
+      "MSI_MODE": "1",
+      "MOUSE_OPTIMIZE": "1",
+      "FORTNITE_INI": "1",
+      "PAGEFILE_OPTIMIZE": "0",
+      "RESOLUTION_CHANGE": "1",
+      "RESOLUTION_WIDTH": "1440",
+      "RESOLUTION_HEIGHT": "1080",
+      "RESOLUTION_REFRESH": "0",
+      "PING_MONITOR": "1",
+      "RAM_CLEANUP": "1",
+      "KILL_USELESS": "1",
+      "LAUNCH_EPIC": "1",
+      "TIMER_RESOLUTION": "1",
+      "NIC_OPTIMIZE": "1"
+    }
+  }
+}

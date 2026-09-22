@@ -1,0 +1,20 @@
+# .NET / C# build outputs
+**/bin/
+**/obj/
+**/publish/
+*.user
+*.suo
+.vs/
+
+# Python build & cache
+__pycache__/
+*.py[cod]
+*$py.class
+dist/
+build/
+*.spec
+
+# Logs & temp files
+*.log
+startup_log.txt
+*.tmp

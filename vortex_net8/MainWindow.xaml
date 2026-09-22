@@ -1,0 +1,1509 @@
+<Window x:Class="VortexNet8.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VORTEX — Мультиигровой Оптимизатор и Лаунчер (C# .NET 8 Pro)"
+        Icon="pack://application:,,,/assets/icons/vortex_logo.ico"
+        Height="880" Width="1300"
+        MinHeight="760" MinWidth="1120"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="#080C14"
+        Foreground="#F8FAFC"
+        AllowDrop="True"
+        DragOver="Window_DragOver"
+        Drop="Window_Drop">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      ResizeBorderThickness="6"
+                      GlassFrameThickness="0"
+                      CornerRadius="0"
+                      UseAeroCaptionButtons="False" />
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <!-- Стили кнопок -->
+        <Style x:Key="CyberButtonPrimary" TargetType="Button">
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1D4ED8"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CyberButtonSecondary" TargetType="Button">
+            <Setter Property="Background" Value="#141D2C"/>
+            <Setter Property="Foreground" Value="#60A5FA"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#1E2E48"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1E2B40"/>
+                    <Setter Property="Foreground" Value="#93C5FD"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CyberButtonSuccess" TargetType="Button">
+            <Setter Property="Background" Value="#059669"/>
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#10B981"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CyberButtonDanger" TargetType="Button">
+            <Setter Property="Background" Value="#991B1B"/>
+            <Setter Property="Foreground" Value="#FEE2E2"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#B91C1C"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#DC2626"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Кнопка навигации сайдбара -->
+        <Style x:Key="SidebarNavBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="btnBorder" Background="{TemplateBinding Background}" CornerRadius="10" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#162033"/>
+                    <Setter Property="Foreground" Value="#F8FAFC"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Круглая кнопка по центру дашборда -->
+        <Style x:Key="RoundCircleBtn" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#0C1524" Offset="0.0"/>
+                        <GradientStop Color="#14233D" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="#38BDF8"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="circleBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="85">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="circleBorder" Property="BorderBrush" Value="#60A5FA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Стиль карточки -->
+        <Style x:Key="CyberCard" TargetType="Border">
+            <Setter Property="Background" Value="#101724"/>
+            <Setter Property="BorderBrush" Value="#1C273A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="18"/>
+        </Style>
+
+        <!-- Стиль текстового поля -->
+        <Style x:Key="CyberTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#0D131F"/>
+            <Setter Property="Foreground" Value="#F8FAFC"/>
+            <Setter Property="BorderBrush" Value="#1C273A"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- Стиль тумблера CheckBox -->
+        <Style x:Key="CyberSwitch" TargetType="CheckBox">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Foreground" Value="#F8FAFC"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border x:Name="SwitchTrack" Width="44" Height="22" CornerRadius="11" Background="#1E293B" BorderBrush="#334155" BorderThickness="1" Margin="0,0,12,0">
+                                <Ellipse x:Name="SwitchThumb" Width="16" Height="16" Fill="#94A3B8" HorizontalAlignment="Left" Margin="2,0,0,0"/>
+                            </Border>
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="SwitchTrack" Property="Background" Value="#2563EB"/>
+                                <Setter TargetName="SwitchTrack" Property="BorderBrush" Value="#3B82F6"/>
+                                <Setter TargetName="SwitchThumb" Property="HorizontalAlignment" Value="Right"/>
+                                <Setter TargetName="SwitchThumb" Property="Margin" Value="0,0,2,0"/>
+                                <Setter TargetName="SwitchThumb" Property="Fill" Value="#FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Глубокий темный стиль скроллбаров (без элементов Windows) -->
+        <Style TargetType="{x:Type ScrollBar}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ScrollBar}">
+                        <Grid x:Name="Bg" Background="Transparent" SnapsToDevicePixels="true">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" IsEnabled="{TemplateBinding IsMouseOver}">
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="{x:Type Thumb}">
+                                                <Border Background="#1E293B" CornerRadius="3"/>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#38BDF8"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Кнопки управления окном в кибер-стиле -->
+        <Style x:Key="WindowControlBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#1E293B"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="WindowCloseBtn" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#94A3B8"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="2,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="b" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="b" Property="Background" Value="#DC2626"/>
+                                <Setter Property="Foreground" Value="#FFFFFF"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border x:Name="RootWindowBorder" Background="#080C14" BorderBrush="#1C273A" BorderThickness="1">
+        <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ============================================================== -->
+        <!-- БОКОВОЕ МЕНЮ (САЙДБАР) БЕЗ ФОНОВОГО СТРАЖА -->
+        <!-- ============================================================== -->
+        <Border Grid.Column="0" Background="#0A0E17" BorderBrush="#1A2333" BorderThickness="0,0,1,0">
+            <DockPanel LastChildFill="True">
+                <!-- Брендинг VORTEX -->
+                <StackPanel DockPanel.Dock="Top" Margin="18,18,18,10">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="/assets/icons/vortex_logo.png" Width="36" Height="36" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="VORTEX" FontSize="20" FontWeight="Black" Foreground="#F8FAFC"/>
+                            <TextBlock Text="PERFORMANCE ENGINE" FontSize="9" FontWeight="Bold" Foreground="#38BDF8"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Border Height="1" Background="#1A2333" Margin="0,14,0,0"/>
+                </StackPanel>
+
+                <!-- Нижняя кнопка закрытия приложения (БЕЗ Фонового стража) -->
+                <StackPanel DockPanel.Dock="Bottom" Margin="14,8,14,14">
+                    <Button Content="✕ Закрыть VORTEX" Style="{StaticResource CyberButtonDanger}" HorizontalAlignment="Stretch" Height="38" Click="ExitApp_Click"/>
+                </StackPanel>
+
+                <!-- 11 навигационных вкладок -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="8,2,8,2">
+                    <StackPanel>
+                        <TextBlock Text="НАВИГАЦИЯ" FontSize="10" FontWeight="Black" Foreground="#64748B" Margin="14,4,14,6"/>
+
+                        <!-- 1. Главный экран -->
+                        <Button x:Name="NavDashboardBtn" Style="{StaticResource SidebarNavBtn}" Background="#162033" Foreground="#60A5FA" Margin="0,1" Click="Nav_Click" Tag="dashboard">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_dashboard.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Главный экран" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 2. Серверы игр (Пинг) -->
+                        <Button x:Name="NavServicesBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="services">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_services.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Серверы игр (Пинг)" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 3. Настройки и параметры -->
+                        <Button x:Name="NavSettingsBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="settings">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_tweaks.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Настройки и параметры" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 4. Разрешение в игре -->
+                        <Button x:Name="NavResolutionBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="resolution">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_resolution.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Разрешение в игре" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 5. Сеть и DNS -->
+                        <Button x:Name="NavNetworkBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="network">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_network.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Сеть и DNS" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 6. Инпут-лаг & FilterKeys -->
+                        <Button x:Name="NavLatencyBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="latency">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_latency.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Инпут-лаг &amp; FilterKeys" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 7. Твики Windows & FPS -->
+                        <Button x:Name="NavTweaksBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="tweaks">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_tweaks.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Твики Windows &amp; FPS" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 8. Игровые пресеты -->
+                        <Button x:Name="NavPresetsBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="presets">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_presets.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Игровые пресеты" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 9. Радар пинга -->
+                        <Button x:Name="NavPingBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="ping">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_ping.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Радар пинга" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 10. Очистка кэша -->
+                        <Button x:Name="NavCleanupBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="cleanup">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_cleanup.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Очистка кэша" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- 11. Откат параметров -->
+                        <Button x:Name="NavRestoreBtn" Style="{StaticResource SidebarNavBtn}" Margin="0,1" Click="Nav_Click" Tag="restore">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="/assets/icons/nav_restore.png" Width="18" Height="18" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,12,0"/>
+                                <TextBlock Text="Откат параметров" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+
+        <!-- ============================================================== -->
+        <!-- ОСНОВНАЯ ОБЛАСТЬ (ВЕРХНЯЯ ПАНЕЛЬ ТЕЛЕМЕТРИИ + 11 ВКЛАДОК) -->
+        <!-- ============================================================== -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="58"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- ШАПКА ТЕЛЕМЕТРИИ И УПРАВЛЕНИЯ ОКНОМ (БЕЗ ЭЛЕМЕНТОВ WINDOWS) -->
+            <Border Grid.Row="0" Background="#0A0E17" BorderBrush="#1A2333" BorderThickness="0,0,0,1" MouseLeftButtonDown="Header_MouseDown">
+                <Grid Margin="18,0">
+                    <!-- Левая сторона: Телеметрия RAM, ЯДРО, Статус игры -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="#101724" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="8" Padding="12,6" Margin="0,0,10,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🧠 RAM: " FontSize="11" FontWeight="Bold" Foreground="#A78BFA"/>
+                                <TextBlock x:Name="HeaderRamText" Text="Загрузка..." FontSize="11" FontWeight="Bold" Foreground="#F8FAFC" Margin="0,0,12,0"/>
+                                <TextBlock Text="⏱️ ЯДРО: " FontSize="11" FontWeight="Bold" Foreground="#38BDF8"/>
+                                <TextBlock x:Name="HeaderTimerText" Text="0.500 мс" FontSize="11" FontWeight="Bold" Foreground="#34D399"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border x:Name="HeaderGameStatusBorder" Background="#121D2C" BorderBrush="#1E2F48" BorderThickness="1" CornerRadius="8" Padding="12,6">
+                            <TextBlock x:Name="HeaderGameStatusText" Text="● Fortnite (Готова к запуску)" FontSize="11" FontWeight="Bold" Foreground="#38BDF8"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Правая сторона: Кнопки управления окном VORTEX (минимизация, разворот, закрытие) -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <Button Content="—" Click="BtnMinimize_Click" Style="{StaticResource WindowControlBtn}" ToolTip="Свернуть"/>
+                        <Button Content="⬜" Click="BtnMaximize_Click" Style="{StaticResource WindowControlBtn}" ToolTip="Развернуть / Восстановить"/>
+                        <Button Content="✕" Click="BtnClose_Click" Style="{StaticResource WindowCloseBtn}" ToolTip="Закрыть"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- КОНТЕЙНЕР ДЛЯ ВСЕХ 11 ВКЛАДОК -->
+            <Grid Grid.Row="1">
+                
+                <!-- ========================================================== -->
+                <!-- 1. ВКЛАДКА: ГЛАВНЫЙ ЭКРАН (ПОЛНОЭКРАННАЯ ПАНЕЛЬ С ФОНОМ FORTNITE) -->
+                <!-- ========================================================== -->
+                <Grid x:Name="ViewDashboard" Visibility="Visible" Margin="14">
+                    <!-- Фон с пользовательской картинкой геймплея Fortnite и кибер-затемнением -->
+                    <Border CornerRadius="16" ClipToBounds="True" BorderBrush="#1E2E48" BorderThickness="1">
+                        <Grid>
+                            <!-- Картинка геймплея Fortnite / выбранной игры (динамическая) -->
+                            <Image x:Name="DashboardBackgroundImage" Visibility="Collapsed" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            
+                            <!-- Темный кибер-градиент и виньетка (обеспечивает читаемость и видимость карты 76%) -->
+                            <Rectangle>
+                                <Rectangle.Fill>
+                                    <RadialGradientBrush Center="0.5,0.5" GradientOrigin="0.5,0.5" RadiusX="0.9" RadiusY="0.9">
+                                        <GradientStop Color="#CC070B14" Offset="0.0"/>
+                                        <GradientStop Color="#F0070B14" Offset="1.0"/>
+                                    </RadialGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                            <!-- Основное содержимое панели Дашборда -->
+                            <Grid Margin="24,20">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- ВЕРХ: Заголовок и пояснение -->
+                                <StackPanel Grid.Row="0">
+                                    <TextBlock x:Name="HeroTitle" Text="Оптимизация и запуск Fortnite" FontSize="26" FontWeight="Black" Foreground="#FFFFFF"/>
+                                    <TextBlock x:Name="HeroSubtitle" Text="Выберите игру слева и нажмите «ЗАПУСК»: система оптимизируется, и игра откроется автоматически" FontSize="12" FontWeight="Medium" Foreground="#CBD5E1" Margin="0,3,0,0"/>
+                                </StackPanel>
+
+                                <!-- ЦЕНТР: СЛЕВА ВЫБОР ИГР + СТАТУСЫ, СПРАВА КРУГЛАЯ КНОПКА «ЗАПУСК» (230x230 px) -->
+                                <Grid Grid.Row="1" VerticalAlignment="Center" Margin="0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="390"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- ЛЕВАЯ КОЛОНКА: ТОЛЬКО УСТАНОВЛЕННЫЕ ИГРЫ + 3 ПЛАШКИ -->
+                                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                        <Grid Margin="0,0,0,8">
+                                            <TextBlock Text="УСТАНОВЛЕННЫЕ ИГРЫ НА ВАШЕМ ПК" FontSize="11" FontWeight="Black" Foreground="#38BDF8"/>
+                                            <TextBlock x:Name="FoundGamesCountText" Text="2 игры найдено" FontSize="10" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+
+                                        <!-- Скроллируемый контейнер карточек игр -->
+                                        <ScrollViewer MaxHeight="210" VerticalScrollBarVisibility="Auto" Margin="0,0,0,6">
+                                            <StackPanel x:Name="GamesCardsList">
+                                                <!-- Карточка 1: Fortnite -->
+                                                <Border x:Name="CardFortnite" Background="#121D2E" BorderBrush="#38BDF8" BorderThickness="1.5" CornerRadius="12" Padding="12,8" Margin="0,0,0,6" Cursor="Hand" MouseLeftButtonDown="CardFortnite_Click">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Text="🎮" FontSize="22" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                            <Grid>
+                                                                <TextBlock x:Name="TitleFortniteText" Text="Fortnite Battle Royale" FontSize="12.5" FontWeight="Black" Foreground="#FFFFFF"/>
+                                                                <Border Background="#064E3B" CornerRadius="4" Padding="5,2" HorizontalAlignment="Right">
+                                                                    <TextBlock Text="● Установлена" FontSize="8.5" FontWeight="Bold" Foreground="#34D399"/>
+                                                                </Border>
+                                                            </Grid>
+                                                            <TextBlock x:Name="PathFortniteText" Text="C:\Program Files\Epic Games\Fortnite\..." FontSize="9.5" Foreground="#67E8F9" FontFamily="Consolas" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+
+                                                <!-- Карточка 2: CS2 -->
+                                                <Border x:Name="CardCS2" Background="#0E1524" BorderBrush="#1C2C45" BorderThickness="1" CornerRadius="12" Padding="12,8" Margin="0,0,0,6" Cursor="Hand" MouseLeftButtonDown="CardCS2_Click">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Text="💣" FontSize="22" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                            <Grid>
+                                                                <TextBlock x:Name="TitleCS2Text" Text="Counter-Strike 2" FontSize="12.5" FontWeight="Black" Foreground="#FFFFFF"/>
+                                                                <Border Background="#064E3B" CornerRadius="4" Padding="5,2" HorizontalAlignment="Right">
+                                                                    <TextBlock Text="● Установлена" FontSize="8.5" FontWeight="Bold" Foreground="#34D399"/>
+                                                                </Border>
+                                                            </Grid>
+                                                            <TextBlock x:Name="PathCS2Text" Text="E:\SteamLibrary\steamapps\common\Counter-Strike..." FontSize="9.5" Foreground="#67E8F9" FontFamily="Consolas" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+
+                                                <!-- Контейнер динамических пользовательских игр -->
+                                                <StackPanel x:Name="CustomGamesPanel"/>
+                                            </StackPanel>
+                                        </ScrollViewer>
+
+                                        <!-- Карточка 3: Добавить другую игру / Drag & Drop -->
+                                        <Border x:Name="CardCustom" Background="#0C1320" BorderBrush="#2563EB" BorderThickness="1.5" CornerRadius="12" Padding="12,7" Margin="0,0,0,6" Cursor="Hand" MouseLeftButtonDown="CardCustom_Click">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="➕" FontSize="18" Foreground="#38BDF8" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                                    <TextBlock Text="Добавить игру или ярлык" FontSize="12" FontWeight="Black" Foreground="#38BDF8"/>
+                                                    <TextBlock Text="💡 Перетащите .lnk, .url или .exe сюда (Drag &amp; Drop)" FontSize="9" Foreground="#94A3B8" Margin="0,1,0,0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- ПАНЕЛЬ ДЕЙСТВИЙ ВЫБРАННОЙ ИГРЫ: ФОН, ПЕРЕИМЕНОВАНИЕ, ЯРЛЫК НА РАБОЧИЙ СТОЛ -->
+                                        <Border Background="#0C121E" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="6,5" Margin="0,0,0,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Button x:Name="BtnChangeBackground" Grid.Column="0" Content="🖼️ Свой фон" ToolTip="Установить фоновое изображение для выбранной игры" Click="BtnChangeBackground_Click" Style="{StaticResource CyberButtonSecondary}" Height="28" Padding="2" FontSize="10.5" Margin="0,0,3,0"/>
+                                                <Button x:Name="BtnRenameGame" Grid.Column="1" Content="✏️ Название" ToolTip="Переименовать игру для отображения в VORTEX" Click="BtnRenameGame_Click" Style="{StaticResource CyberButtonSecondary}" Height="28" Padding="2" FontSize="10.5" Margin="2,0,3,0"/>
+                                                <Button x:Name="BtnCreateShortcut" Grid.Column="2" Content="🖥️ На раб. стол" ToolTip="Создать ярлык игры на Рабочем столе с оптимизацией VORTEX" Click="BtnCreateShortcut_Click" Style="{StaticResource CyberButtonPrimary}" Height="28" Padding="2" FontSize="10.5" Margin="2,0,0,0"/>
+                                                <Button x:Name="BtnDeleteCustomGame" Grid.Column="3" Content="🗑️" ToolTip="Удалить добавленную игру" Click="BtnDeleteCustomGame_Click" Style="{StaticResource CyberButtonDanger}" Height="28" Padding="6,2" FontSize="11" Margin="4,0,0,0" Visibility="Collapsed"/>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- 3 информационные плашки под играми -->
+                                        <UniformGrid Columns="3">
+                                            <Border Background="#0D1524" BorderBrush="#1C2C45" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="0,0,4,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="ПИНГ СЕТИ (DNS)" FontSize="9" FontWeight="Black" Foreground="#64748B"/>
+                                                    <TextBlock x:Name="DashPingValue" Text="-- мс" FontSize="15" FontWeight="Black" Foreground="#10B981" Margin="0,2,0,0"/>
+                                                    <TextBlock x:Name="DashPingSub" Text="Проверка DNS..." FontSize="9" Foreground="#34D399"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Border Background="#0D1524" BorderBrush="#1C2C45" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="2,0,2,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="ПАМЯТЬ ОЗУ" FontSize="9" FontWeight="Black" Foreground="#64748B"/>
+                                                    <TextBlock Text="+2.4 ГБ" FontSize="15" FontWeight="Black" Foreground="#A78BFA" Margin="0,2,0,0"/>
+                                                    <TextBlock Text="Кэш очищен" FontSize="9" Foreground="#C4B5FD"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <Border Background="#0D1524" BorderBrush="#1C2C45" BorderThickness="1" CornerRadius="10" Padding="10,8" Margin="4,0,0,0">
+                                                <StackPanel>
+                                                    <TextBlock Text="ТАЙМЕР ЯДРА" FontSize="9" FontWeight="Black" Foreground="#64748B"/>
+                                                    <TextBlock Text="0.500 мс" FontSize="15" FontWeight="Black" Foreground="#38BDF8" Margin="0,2,0,0"/>
+                                                    <TextBlock Text="Фиксация 100%" FontSize="9" Foreground="#7DD3FC"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </UniformGrid>
+
+                                        <!-- БЕНЧМАРК ИГРОВЫХ DNS В РЕАЛЬНОМ ВРЕМЕНИ (КАК В ВЕРСИИ НА PYTHON) -->
+                                        <Border Background="#0B1220" BorderBrush="#1D2E49" BorderThickness="1" CornerRadius="10" Padding="8,6" Margin="0,8,0,0">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,8,0">
+                                                    <TextBlock Text="⚡ DNS:" FontSize="10.5" FontWeight="Black" Foreground="#38BDF8" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                                    <Border Background="#064E3B" CornerRadius="4" Padding="5,2" VerticalAlignment="Center">
+                                                        <TextBlock x:Name="DashBestDnsBadge" Text="👑 ТЕСТ..." FontSize="9" FontWeight="Bold" Foreground="#34D399"/>
+                                                    </Border>
+                                                </StackPanel>
+
+                                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <TextBlock Text="CF: " FontSize="9" Foreground="#64748B" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="DashDnsCf" Text="-- мс" FontSize="9.5" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,6,0" VerticalAlignment="Center"/>
+
+                                                    <TextBlock Text="Google: " FontSize="9" Foreground="#64748B" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="DashDnsGoogle" Text="-- мс" FontSize="9.5" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,6,0" VerticalAlignment="Center"/>
+
+                                                    <TextBlock Text="Яндекс: " FontSize="9" Foreground="#64748B" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="DashDnsYandex" Text="-- мс" FontSize="9.5" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,6,0" VerticalAlignment="Center"/>
+
+                                                    <TextBlock Text="OpenDNS: " FontSize="9" Foreground="#64748B" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="DashDnsOpenDns" Text="-- мс" FontSize="9.5" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,6,0" VerticalAlignment="Center"/>
+
+                                                    <TextBlock Text="Quad9: " FontSize="9" Foreground="#64748B" VerticalAlignment="Center"/>
+                                                    <TextBlock x:Name="DashDnsQuad9" Text="-- мс" FontSize="9.5" FontWeight="Bold" Foreground="#38BDF8" VerticalAlignment="Center"/>
+                                                </StackPanel>
+
+                                                <Button Grid.Column="2" Content="🔄 DNS" Style="{StaticResource CyberButtonSecondary}" Height="20" Padding="5,0" FontSize="9" Click="RefreshDns_Click" ToolTip="Перепроверить все игровые DNS"/>
+                                            </Grid>
+                                        </Border>
+                                    </StackPanel>
+
+                                    <!-- ПРАВАЯ КОЛОНКА: КРУГЛАЯ КНОПКА «ЗАПУСК» (230x230 px) И ТАЙМЕР -->
+                                    <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <!-- Контейнер круга 230x230 px с круговым прогрессом -->
+                                        <Grid Width="230" Height="230" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <!-- Фоновый круг -->
+                                            <Ellipse Width="210" Height="210" Stroke="#182538" StrokeThickness="10" Fill="Transparent"/>
+
+                                            <!-- Анимированный контур прогресса по кругу (WPF Path) -->
+                                            <Path x:Name="CircleProgressArc" Stroke="#38BDF8" StrokeThickness="10" StrokeStartLineCap="Round" StrokeEndLineCap="Round">
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathFigure x:Name="CircleArcFigure" StartPoint="115,15">
+                                                            <ArcSegment x:Name="CircleArcSegment" Point="115,15" Size="100,100" IsLargeArc="False" SweepDirection="Clockwise"/>
+                                                        </PathFigure>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+
+                                            <!-- Внутренняя круглая кнопка с текстом «ЗАПУСК» -->
+                                            <Button x:Name="CircleLaunchBtn" Width="170" Height="170" Style="{StaticResource RoundCircleBtn}" Click="CircleLaunch_Click">
+                                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                    <TextBlock x:Name="CircleIcon" Text="▶" FontSize="24" Foreground="#38BDF8" HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                                                    <TextBlock x:Name="CirclePercentText" Text="ЗАПУСК" FontSize="26" FontWeight="Black" Foreground="#FFFFFF" HorizontalAlignment="Center"/>
+                                                    <TextBlock x:Name="CircleSubText" Text="FORTNITE" FontSize="11" FontWeight="Bold" Foreground="#38BDF8" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+
+                                        <!-- ТАЙМЕР СКОЛЬКО РАБОТАЕТ В ИГРЕ -->
+                                        <Border Background="#0D1524" BorderBrush="#1C2C45" BorderThickness="1" CornerRadius="16" Padding="16,6" Margin="0,14,0,0" HorizontalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                                <Ellipse x:Name="TimerDot" Width="8" Height="8" Fill="#64748B" Margin="0,0,8,0"/>
+                                                <TextBlock Text="Время в игре: " FontSize="12" FontWeight="Bold" Foreground="#94A3B8"/>
+                                                <TextBlock x:Name="SessionTimerText" Text="00:00:00" FontSize="14" FontWeight="Black" Foreground="#38BDF8"/>
+                                            </StackPanel>
+                                        </Border>
+
+                                        <!-- Описание этапа под кнопкой -->
+                                        <TextBlock x:Name="CircleStageDesc" Text="Нажмите «ЗАПУСК»: система оптимизируется, и игра откроется автоматически" FontSize="11" Foreground="#CBD5E1" Margin="0,8,0,0" TextAlignment="Center" TextWrapping="Wrap" MaxWidth="440"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- НИЗ: Компактный живой лог действий -->
+                                <Border Grid.Row="2" Background="#090D15" BorderBrush="#192436" BorderThickness="1" CornerRadius="12" Padding="14,10">
+                                    <StackPanel>
+                                        <Grid Margin="0,0,0,4">
+                                            <TextBlock Text="ЛОГ ОПТИМИЗАЦИИ И ЗАПУСКА" FontSize="10" FontWeight="Black" Foreground="#64748B"/>
+                                            <TextBlock x:Name="TerminalStatus" Text="● Готов к запуску" FontSize="10" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                        <TextBox x:Name="DashLogBox" Height="60" Style="{StaticResource CyberTextBox}" Background="Transparent" BorderThickness="0" FontFamily="Consolas" FontSize="11" Foreground="#94A3B8" IsReadOnly="True" VerticalScrollBarVisibility="Auto"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- ========================================================== -->
+                <!-- 2. ВКЛАДКА: СЕРВЕРЫ ИГР (ПРОВЕРКА СЕРВЕРОВ ВСЕХ ПОПУЛЯРНЫХ ИГР) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewServices" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="🌐 МОНИТОРИНГ И ПРОВЕРКА СЕРВЕРОВ ИГР" FontSize="18" FontWeight="Black" Foreground="#F8FAFC"/>
+                                <TextBlock Text="Проверка доступности и пинга игровых дата-центров популярных соревновательных игр" FontSize="12" Foreground="#94A3B8" Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <Button Content="⚡ Проверить пинг всех серверов" Style="{StaticResource CyberButtonPrimary}" HorizontalAlignment="Right" Height="40" Click="CheckAllGameServers_Click"/>
+                        </Grid>
+
+                        <UniformGrid Columns="2">
+                            <!-- 1. Fortnite / Epic Games -->
+                            <Border Style="{StaticResource CyberCard}" Margin="0,0,8,12">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="🎮 Fortnite (Epic Games)" FontSize="14" FontWeight="Black" Foreground="#38BDF8"/>
+                                        <Border Background="#064E3B" CornerRadius="4" Padding="6,2" HorizontalAlignment="Right">
+                                            <TextBlock Text="Все системы в норме" FontSize="9" FontWeight="Bold" Foreground="#34D399"/>
+                                        </Border>
+                                    </Grid>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="EOS Matchmaking (EU Frankfurt)" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingFnEuText" Text="● 24 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="Fortnite Game &amp; Party Services" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingFnSvcText" Text="● 28 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6">
+                                        <Grid>
+                                            <TextBlock Text="Vivox Voice Chat Servers" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingFnVoiceText" Text="● 31 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- 2. Counter-Strike 2 / Valve -->
+                            <Border Style="{StaticResource CyberCard}" Margin="8,0,0,12">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="💣 Counter-Strike 2 (Valve SDR)" FontSize="14" FontWeight="Black" Foreground="#FBBF24"/>
+                                        <Border Background="#064E3B" CornerRadius="4" Padding="6,2" HorizontalAlignment="Right">
+                                            <TextBlock Text="Кластеры активны" FontSize="9" FontWeight="Bold" Foreground="#34D399"/>
+                                        </Border>
+                                    </Grid>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="Valve SDR (Frankfurt / EU West)" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingCsFraText" Text="● 19 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="Valve SDR (Stockholm / EU North)" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingCsStoText" Text="● 26 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6">
+                                        <Grid>
+                                            <TextBlock Text="Steam Game Coordinator &amp; VAC" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingCsVacText" Text="● 22 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- 3. Valorant / Riot Games -->
+                            <Border Style="{StaticResource CyberCard}" Margin="0,0,8,12">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="🎯 Valorant (Riot Direct)" FontSize="14" FontWeight="Black" Foreground="#F87171"/>
+                                        <Border Background="#064E3B" CornerRadius="4" Padding="6,2" HorizontalAlignment="Right">
+                                            <TextBlock Text="Riot Direct Online" FontSize="9" FontWeight="Bold" Foreground="#34D399"/>
+                                        </Border>
+                                    </Grid>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="Riot EU Central (Frankfurt 1 &amp; 2)" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingValFraText" Text="● 23 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="Riot EU West (London)" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingValLonText" Text="● 34 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6">
+                                        <Grid>
+                                            <TextBlock Text="Riot Vanguard Auth Network" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingValAuthText" Text="● 27 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- 4. Apex Legends / EA -->
+                            <Border Style="{StaticResource CyberCard}" Margin="8,0,0,12">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="⚡ Apex Legends (Respawn / EA)" FontSize="14" FontWeight="Black" Foreground="#C084FC"/>
+                                        <Border Background="#064E3B" CornerRadius="4" Padding="6,2" HorizontalAlignment="Right">
+                                            <TextBlock Text="Дата-центры в норме" FontSize="9" FontWeight="Bold" Foreground="#34D399"/>
+                                        </Border>
+                                    </Grid>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="EA Matchmaking (Frankfurt 1)" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingApexFra1Text" Text="● 25 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="EA Matchmaking (Frankfurt 2)" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingApexFra2Text" Text="● 27 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6">
+                                        <Grid>
+                                            <TextBlock Text="Respawn Game Clusters" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingApexLonText" Text="● 36 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- 5. Dota 2 / Valve -->
+                            <Border Style="{StaticResource CyberCard}" Margin="0,0,8,0">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="🛡️ Dota 2 (Valve)" FontSize="14" FontWeight="Black" Foreground="#60A5FA"/>
+                                        <Border Background="#064E3B" CornerRadius="4" Padding="6,2" HorizontalAlignment="Right">
+                                            <TextBlock Text="Координатор Online" FontSize="9" FontWeight="Bold" Foreground="#34D399"/>
+                                        </Border>
+                                    </Grid>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="Dota 2 EU West (Люксембург)" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingDotaEuwText" Text="● 29 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6">
+                                        <Grid>
+                                            <TextBlock Text="Dota 2 EU East (Вена)" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingDotaEueText" Text="● 28 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- 6. Call of Duty / Warzone -->
+                            <Border Style="{StaticResource CyberCard}" Margin="8,0,0,0">
+                                <StackPanel>
+                                    <Grid Margin="0,0,0,8">
+                                        <TextBlock Text="🔫 Call of Duty / Warzone" FontSize="14" FontWeight="Black" Foreground="#4ADE80"/>
+                                        <Border Background="#064E3B" CornerRadius="4" Padding="6,2" HorizontalAlignment="Right">
+                                            <TextBlock Text="Demonware Active" FontSize="9" FontWeight="Bold" Foreground="#34D399"/>
+                                        </Border>
+                                    </Grid>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6" Margin="0,0,0,4">
+                                        <Grid>
+                                            <TextBlock Text="Demonware EU Gateway" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingCodEuText" Text="● 32 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Background="#090D15" CornerRadius="8" Padding="10,6">
+                                        <Grid>
+                                            <TextBlock Text="Activision Auth Servers" FontSize="11" Foreground="#CBD5E1"/>
+                                            <TextBlock x:Name="PingCodAuthText" Text="● 35 мс" FontSize="11" FontWeight="Bold" Foreground="#10B981" HorizontalAlignment="Right"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </UniformGrid>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ========================================================== -->
+                <!-- 3. ВКЛАДКА: НАСТРОЙКИ И ПАРАМЕТРЫ (SETTINGS) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewSettings" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="⚙️ НАСТРОЙКИ И ПАРАМЕТРЫ ЗАПУСКА" FontSize="18" FontWeight="Black" Foreground="#F8FAFC" Margin="0,0,0,14"/>
+
+                        <!-- Блок 1: Параметры запуска -->
+                        <Border Style="{StaticResource CyberCard}" Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="⚡ ПАРАМЕТРЫ ЗАПУСКА ИГР" FontSize="12" FontWeight="Black" Foreground="#38BDF8" Margin="0,0,0,12"/>
+                                
+                                <Grid Margin="0,6">
+                                    <StackPanel>
+                                        <TextBlock Text="Всегда запускать игру при нажатии на круг" FontSize="13" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Оптимизирует таймер ядра 0.5 мс, сеть, RAM и открывает исполняемый файл выбранной игры" FontSize="11" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="SetLaunchEpicCheck" Style="{StaticResource CyberSwitch}" IsChecked="True" HorizontalAlignment="Right" Click="SetLaunchEpicCheck_Click"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333" Margin="0,6"/>
+
+                                <Grid Margin="0,6">
+                                    <StackPanel>
+                                        <TextBlock Text="Динамический FilterKeys (150 мс быстрый ввод)" FontSize="13" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Активируется во время матча, вне игры возвращается стандарт 1000 мс" FontSize="11" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="SetAutoTurboCheck" Style="{StaticResource CyberSwitch}" IsChecked="True" HorizontalAlignment="Right" Click="SetAutoTurboCheck_Click"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333" Margin="0,6"/>
+
+                                <Grid Margin="0,6">
+                                    <StackPanel>
+                                        <TextBlock Text="Понижать приоритет фоновых лаунчеров (Discord, Epic Games)" FontSize="13" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Переводит посторонние процессы в Idle для высвобождения ядер CPU" FontSize="11" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="SetThrottleLaunchersCheck" Style="{StaticResource CyberSwitch}" IsChecked="True" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333" Margin="0,6"/>
+
+                                <Grid Margin="0,6">
+                                    <StackPanel>
+                                        <TextBlock Text="📟 Открывать окно консоли с логами и процентами" FontSize="13" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Показывает нативное окно терминала с процентами при обычном запуске из меню" FontSize="11" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="SetShowConsoleCheck" Style="{StaticResource CyberSwitch}" IsChecked="False" HorizontalAlignment="Right" Click="SetShowConsoleCheck_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Блок 2: Быстрые действия в 1 клик -->
+                        <Border Style="{StaticResource CyberCard}" Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="⚡ БЫСТРЫЕ ДЕЙСТВИЯ В 1 КЛИК" FontSize="12" FontWeight="Black" Foreground="#A78BFA" Margin="0,0,0,12"/>
+                                <UniformGrid Columns="3">
+                                    <Button Style="{StaticResource CyberButtonSecondary}" Margin="0,0,6,0" Height="68" Click="QuickRam_Click">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="🧹" FontSize="22" Margin="0,0,12,0"/>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="Очистить RAM" FontSize="12" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                                <TextBlock Text="Standby List + рабочие наборы" FontSize="10" Foreground="#C4B5FD"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button Style="{StaticResource CyberButtonSecondary}" Margin="3,0,3,0" Height="68" Click="QuickFlushDns_Click">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="📶" FontSize="22" Margin="0,0,12,0"/>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="Сброс DNS" FontSize="12" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                                <TextBlock Text="Flush DNS Resolver Cache" FontSize="10" Foreground="#6EE7B7"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button Style="{StaticResource CyberButtonSecondary}" Margin="6,0,0,0" Height="68" Click="QuickTimerSync_Click">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Text="⏱️" FontSize="22" Margin="0,0,12,0"/>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="Таймер 0.5 мс" FontSize="12" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                                <TextBlock Text="Аппаратная фиксация ядра" FontSize="10" Foreground="#7DD3FC"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Button>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Блок 3: Автозагрузка и трей -->
+                        <Border Style="{StaticResource CyberCard}" Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="🖥️ АВТОЗАГРУЗКА И СИСТЕМНЫЙ ТРЕЙ" FontSize="12" FontWeight="Black" Foreground="#34D399" Margin="0,0,0,12"/>
+                                <Grid Margin="0,6">
+                                    <StackPanel>
+                                        <TextBlock Text="Автозагрузка VORTEX при старте Windows" FontSize="13" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Запуск через Планировщик задач с наивысшими правами без окон UAC" FontSize="11" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="SetAutostartCheck" Style="{StaticResource CyberSwitch}" HorizontalAlignment="Right" Click="SetAutostartCheck_Click"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333" Margin="0,6"/>
+
+                                <Grid Margin="0,6">
+                                    <StackPanel>
+                                        <TextBlock Text="Сворачивать в трей при закрытии (✕)" FontSize="13" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Сохраняет работу таймера 0.5 мс в фоне" FontSize="11" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="SetCloseToTrayCheck" Style="{StaticResource CyberSwitch}" HorizontalAlignment="Right" Click="SetCloseToTrayCheck_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Блок 4: Сброс настроек -->
+                        <Border Style="{StaticResource CyberCard}">
+                            <StackPanel>
+                                <TextBlock Text="🛠️ КОНФИГУРАЦИЯ" FontSize="12" FontWeight="Black" Foreground="#64748B" Margin="0,0,0,10"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="📁 Открыть папку Config" Style="{StaticResource CyberButtonSecondary}" Height="38" Margin="0,0,10,0" Click="OpenConfigFolder_Click"/>
+                                    <Button Content="🔄 Сброс настроек к заводским" Style="{StaticResource CyberButtonDanger}" Height="38" Click="ResetSettings_Click"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ========================================================== -->
+                <!-- 4. ВКЛАДКА: РАЗРЕШЕНИЕ В ИГРЕ (RESOLUTION) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewResolution" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="🔒 РАЗРЕШЕНИЕ В ИГРЕ (STRETCHED RES LOCK)" FontSize="18" FontWeight="Black" Foreground="#F8FAFC" Margin="0,0,0,4"/>
+                        <TextBlock Text="Прямая синхронизация 8 параметров GameUserSettings.ini и защита Read-Only." FontSize="12" Foreground="#94A3B8" Margin="0,0,0,14"/>
+
+                        <Border Style="{StaticResource CyberCard}" Margin="0,0,0,16">
+                            <Grid>
+                                <StackPanel>
+                                    <TextBlock Text="ТЕКУЩИЙ СТАТУС GAMEUSERSETTINGS.INI" FontSize="12" FontWeight="Bold" Foreground="#60A5FA" Margin="0,0,6,0"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Border Background="#182234" CornerRadius="8" Padding="12,6" Margin="0,0,10,0">
+                                            <TextBlock x:Name="ResStatusText" Text="В файле: 1920 × 1080" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        </Border>
+                                        <Border x:Name="ResLockBadge" Background="#064E3B" CornerRadius="8" Padding="12,6">
+                                            <TextBlock x:Name="ResLockText" Text="🟢 Защита активна (Read-Only: ВКЛ)" FontSize="12" FontWeight="Bold" Foreground="#34D399"/>
+                                        </Border>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <Button x:Name="ResToggleLockBtn" Content="🔒 Переключить Read-Only" Style="{StaticResource CyberButtonSecondary}" Height="38" Margin="0,0,8,0" Click="ResToggleLock_Click"/>
+                                    <Button Content="🔄 Обновить" Style="{StaticResource CyberButtonSecondary}" Height="38" Click="ResRefreshStatus_Click"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <Border Style="{StaticResource CyberCard}">
+                            <StackPanel>
+                                <TextBlock Text="БЫСТРЫЕ ПРЕСЕТЫ РАЗРЕШЕНИЙ КИБЕРСПОРТА" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,12"/>
+                                <UniformGrid Columns="4">
+                                    <Border Background="#131A26" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,0,6,10">
+                                        <StackPanel>
+                                            <TextBlock Text="1920 × 1080" FontSize="15" FontWeight="Black" Foreground="#F8FAFC"/>
+                                            <TextBlock Text="16:9 NATIVE • Full HD" FontSize="10" Foreground="#64748B" Margin="0,3,0,10"/>
+                                            <Button Content="Выбрать" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="ApplyPresetRes_Click" Tag="1920x1080"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131A26" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="12" Margin="3,0,3,10">
+                                        <StackPanel>
+                                            <TextBlock Text="1720 × 1080" FontSize="15" FontWeight="Black" Foreground="#F8FAFC"/>
+                                            <TextBlock Text="16:10 ALPHA • Хит Bugha" FontSize="10" Foreground="#64748B" Margin="0,3,0,10"/>
+                                            <Button Content="Выбрать" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="ApplyPresetRes_Click" Tag="1720x1080"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131A26" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="12" Margin="3,0,3,10">
+                                        <StackPanel>
+                                            <TextBlock Text="1650 × 1080" FontSize="15" FontWeight="Black" Foreground="#F8FAFC"/>
+                                            <TextBlock Text="16:10 BALANCED • Mongraal" FontSize="10" Foreground="#64748B" Margin="0,3,0,10"/>
+                                            <Button Content="Выбрать" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="ApplyPresetRes_Click" Tag="1650x1080"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131A26" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="12" Margin="6,0,0,10">
+                                        <StackPanel>
+                                            <TextBlock Text="1440 × 1080" FontSize="15" FontWeight="Black" Foreground="#F8FAFC"/>
+                                            <TextBlock Text="4:3 STRETCHED • Pro Pick" FontSize="10" Foreground="#64748B" Margin="0,3,0,10"/>
+                                            <Button Content="Выбрать" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="ApplyPresetRes_Click" Tag="1440x1080"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131A26" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="12" Margin="0,0,6,0">
+                                        <StackPanel>
+                                            <TextBlock Text="1280 × 960" FontSize="15" FontWeight="Black" Foreground="#F8FAFC"/>
+                                            <TextBlock Text="4:3 MAX FPS • CS2 / FN" FontSize="10" Foreground="#64748B" Margin="0,3,0,10"/>
+                                            <Button Content="Выбрать" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="ApplyPresetRes_Click" Tag="1280x960"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131A26" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="12" Margin="3,0,3,0">
+                                        <StackPanel>
+                                            <TextBlock Text="1280 × 1024" FontSize="15" FontWeight="Black" Foreground="#F8FAFC"/>
+                                            <TextBlock Text="5:4 STRETCHED • Высота" FontSize="10" Foreground="#64748B" Margin="0,3,0,10"/>
+                                            <Button Content="Выбрать" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="ApplyPresetRes_Click" Tag="1280x1024"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131A26" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="12" Margin="3,0,3,0">
+                                        <StackPanel>
+                                            <TextBlock Text="1680 × 1050" FontSize="15" FontWeight="Black" Foreground="#F8FAFC"/>
+                                            <TextBlock Text="16:10 STRETCH • Мягкое" FontSize="10" Foreground="#64748B" Margin="0,3,0,10"/>
+                                            <Button Content="Выбрать" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="ApplyPresetRes_Click" Tag="1680x1050"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131A26" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="12" Margin="6,0,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="1600 × 900" FontSize="15" FontWeight="Black" Foreground="#F8FAFC"/>
+                                            <TextBlock Text="16:9 PERFORMANCE" FontSize="10" Foreground="#64748B" Margin="0,3,0,10"/>
+                                            <Button Content="Выбрать" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="ApplyPresetRes_Click" Tag="1600x900"/>
+                                        </StackPanel>
+                                    </Border>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ========================================================== -->
+                <!-- 5. ВКЛАДКА: СЕТЬ И DNS (NETWORK) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewNetwork" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="📶 ОПТИМИЗАЦИЯ СЕТЕВОГО СТЕКА И ANYCAST DNS" FontSize="18" FontWeight="Black" Foreground="#F8FAFC" Margin="0,0,0,14"/>
+
+                        <Border Style="{StaticResource CyberCard}" Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="БЫСТРЫЙ ВЫБОР ИГРОВОГО DNS" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,10"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,14">
+                                    <ComboBox x:Name="DnsPresetCombo" Width="300" Height="38" Background="#0E1524" Foreground="#F8FAFC" FontSize="13" Margin="0,0,10,0">
+                                        <ComboBoxItem Content="Cloudflare (1.1.1.1)" IsSelected="True"/>
+                                        <ComboBoxItem Content="Google DNS (8.8.8.8)"/>
+                                        <ComboBoxItem Content="Яндекс DNS (77.88.8.8)"/>
+                                        <ComboBoxItem Content="Quad9 (9.9.9.9)"/>
+                                        <ComboBoxItem Content="Автоматический (DHCP провайдера)"/>
+                                    </ComboBox>
+                                    <Button Content="Применить DNS" Style="{StaticResource CyberButtonSuccess}" Height="38" Margin="0,0,10,0" Click="ApplyDns_Click"/>
+                                    <Button Content="⚡ Найти самый быстрый DNS" Style="{StaticResource CyberButtonSecondary}" Height="38" Click="BenchmarkDns_Click"/>
+                                </StackPanel>
+
+                                <UniformGrid Columns="4">
+                                    <Border Background="#131B29" BorderBrush="#1F2E45" BorderThickness="1" CornerRadius="10" Padding="12,8" Margin="0,0,6,0">
+                                        <StackPanel>
+                                            <TextBlock Text="Google DNS" FontSize="11" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                            <TextBlock x:Name="DnsGooglePill" Text="-- мс" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131B29" BorderBrush="#1F2E45" BorderThickness="1" CornerRadius="10" Padding="12,8" Margin="3,0,3,0">
+                                        <StackPanel>
+                                            <TextBlock Text="Cloudflare" FontSize="11" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                            <TextBlock x:Name="DnsCloudflarePill" Text="-- мс" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131B29" BorderBrush="#1F2E45" BorderThickness="1" CornerRadius="10" Padding="12,8" Margin="3,0,3,0">
+                                        <StackPanel>
+                                            <TextBlock Text="Яндекс DNS" FontSize="11" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                            <TextBlock x:Name="DnsYandexPill" Text="-- мс" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Background="#131B29" BorderBrush="#1F2E45" BorderThickness="1" CornerRadius="10" Padding="12,8" Margin="6,0,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="Quad9" FontSize="11" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                            <TextBlock x:Name="DnsQuad9Pill" Text="-- мс" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CyberCard}">
+                            <StackPanel>
+                                <TextBlock Text="ПАКЕТНЫЕ ОПТИМИЗАЦИИ TCP / IP" FontSize="13" FontWeight="Bold" Foreground="#CBD5E1" Margin="0,0,0,12"/>
+                                <Border Background="#182234" CornerRadius="10" Padding="14,10" Margin="0,0,0,8">
+                                    <StackPanel>
+                                        <TextBlock Text="✓ Отключение алгоритма Nagle (TcpAckFrequency = 1)" FontSize="12" FontWeight="Bold" Foreground="#10B981"/>
+                                        <TextBlock Text="Убирает задержку буферизации мелких пакетов, мгновенно отправляя координаты и выстрелы." FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Background="#182234" CornerRadius="10" Padding="14,10">
+                                    <StackPanel>
+                                        <TextBlock Text="✓ DSCP QoS Приоритет пакетов и отключение NetworkThrottling" FontSize="12" FontWeight="Bold" Foreground="#10B981"/>
+                                        <TextBlock Text="Снимает системный лимит Windows на пропускную способность сетевой карты при игре." FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ========================================================== -->
+                <!-- 6. ВКЛАДКА: ИНПУТ-ЛАГ & FILTERKEYS (LATENCY) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewLatency" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="🎯 ТАЙМЕР WINDOWS 0.5 МС И FILTERKEYS" FontSize="18" FontWeight="Black" Foreground="#F8FAFC" Margin="0,0,0,14"/>
+
+                        <Border Style="{StaticResource CyberCard}" Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="Аппаратное переключение системного таймера ядра (Timer Resolution 0.5 мс)" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,8"/>
+                                <TextBlock Text="По умолчанию Windows опрашивает события каждые 15.6 мс. Оптимизатор переводит таймер ядра в режим 0.5 мс (2000 Гц) для мгновенного отклика прицеливания и стрельбы." FontSize="11" Foreground="#94A3B8" TextWrapping="Wrap" Margin="0,0,0,14"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="⚡ ПРИМЕНИТЬ РЕЖИМ 0.5 МС" Style="{StaticResource CyberButtonPrimary}" Height="40" Margin="0,0,12,0" Click="ApplyTimer05_Click"/>
+                                    <Border Background="#064E3B" CornerRadius="8" Padding="12,8">
+                                        <TextBlock Text="🟢 Статус: 0.500 мс удерживается аппаратно" FontSize="12" FontWeight="Bold" Foreground="#34D399"/>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CyberCard}">
+                            <StackPanel>
+                                <TextBlock Text="⚡ ТУРБО-ОТКЛИК КЛАВИАТУРЫ FILTERKEYS (150 МС MONGRAAL / BUGHA)" FontSize="13" FontWeight="Bold" Foreground="#60A5FA" Margin="0,0,0,8"/>
+                                <TextBlock Text="Снижает задержку повтора с 1000 мс до 150 мс для моментального срабатывания турбо-строительства и трипл-эдитов." FontSize="11" Foreground="#94A3B8" TextWrapping="Wrap" Margin="0,0,0,14"/>
+
+                                <Border Background="#0D1420" BorderBrush="#1C273A" BorderThickness="1" CornerRadius="10" Padding="14" Margin="0,0,0,14">
+                                    <StackPanel>
+                                        <TextBlock Text="Тест скорости зажатия клавиши (зажмите любую букву здесь):" FontSize="11" FontWeight="Bold" Foreground="#64748B" Margin="0,0,0,8"/>
+                                        <TextBox x:Name="KeyTestBox" Style="{StaticResource CyberTextBox}" Height="42" FontSize="14" Margin="0,0,0,4"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="⚡ Mongraal (150 мс / 15 мс)" Style="{StaticResource CyberButtonPrimary}" Height="40" Margin="0,0,10,0" Click="ApplyFkMongraal_Click"/>
+                                    <Button Content="⚡ Bugha (130 мс / 20 мс)" Style="{StaticResource CyberButtonSecondary}" Height="40" Margin="0,0,10,0" Click="ApplyFkBugha_Click"/>
+                                    <Button Content="🔄 Сброс на стандарт Windows (1000 мс)" Style="{StaticResource CyberButtonSecondary}" Height="40" Click="ResetFkDefault_Click"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ========================================================== -->
+                <!-- 7. ВКЛАДКА: ТВRollИКИ WINDOWS & FPS (TWEAKS) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewTweaks" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,14">
+                            <TextBlock Text="🛠️ ТВRollИКИ СИСТЕМЫ, CPU, GPU И ПАМЯТИ" FontSize="18" FontWeight="Black" Foreground="#F8FAFC"/>
+                            <Button Content="Включить все рекомендованные" Style="{StaticResource CyberButtonPrimary}" HorizontalAlignment="Right" Height="36" Click="EnableAllTweaks_Click"/>
+                        </Grid>
+
+                        <Border Style="{StaticResource CyberCard}" Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="⚡ ПРОЦЕССОР И ВИДЕОКАРТА" FontSize="12" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,10"/>
+                                <Grid Margin="0,4">
+                                    <StackPanel>
+                                        <TextBlock Text="Разпарковка всех ядер CPU (100% активны)" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Отключает сон ядер и убирает энергосберегающие задержки" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="TwkCpuUnparkCheck" Style="{StaticResource CyberSwitch}" IsChecked="True" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333" Margin="0,6"/>
+
+                                <Grid Margin="0,4">
+                                    <StackPanel>
+                                        <TextBlock Text="Высокий приоритет процесса игры" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Автоматически выдаёт максимальный приоритет процессора игре" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="TwkHighPriorityCheck" Style="{StaticResource CyberSwitch}" IsChecked="True" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333" Margin="0,6"/>
+
+                                <Grid Margin="0,4">
+                                    <StackPanel>
+                                        <TextBlock Text="План питания «Максимальная производительность»" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Активирует скрытый режим Ultimate Performance в Windows" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="TwkPowerPlanCheck" Style="{StaticResource CyberSwitch}" IsChecked="True" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CyberCard}">
+                            <StackPanel>
+                                <TextBlock Text="🖱️ МЫШЬ, ИГРА И СТАБИЛЬНОСТЬ" FontSize="12" FontWeight="Bold" Foreground="#A78BFA" Margin="0,0,0,10"/>
+                                <Grid Margin="0,4">
+                                    <StackPanel>
+                                        <TextBlock Text="Честный отклик мыши 1:1 (Кривые SmoothMouse)" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Идеальные кривые 1:1, отключение акселерации Windows" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="TwkMouseCheck" Style="{StaticResource CyberSwitch}" IsChecked="True" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333" Margin="0,6"/>
+
+                                <Grid Margin="0,4">
+                                    <StackPanel>
+                                        <TextBlock Text="Отключение Windows Game DVR" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Убирает фоновую фоновую запись клипов и оверлейные лаги" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="TwkGameDvrCheck" Style="{StaticResource CyberSwitch}" IsChecked="True" HorizontalAlignment="Right"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333" Margin="0,6"/>
+
+                                <Grid Margin="0,4">
+                                    <StackPanel>
+                                        <TextBlock Text="Глубокая оптимизация Engine.ini" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Отключает туман, размытие и оптимизирует кэширование текстур" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="TwkEngineIniCheck" Style="{StaticResource CyberSwitch}" IsChecked="True" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ========================================================== -->
+                <!-- 8. ВКЛАДКА: ИГРОВЫЕ ПРЕСЕТЫ (PRESETS) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewPresets" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="📁 МЕНЕДЖЕР КИБЕРСПОРТИВНЫХ ПРЕСЕТОВ" FontSize="18" FontWeight="Black" Foreground="#F8FAFC" Margin="0,0,0,14"/>
+
+                        <UniformGrid Columns="2" Margin="0,0,0,16">
+                            <Border Style="{StaticResource CyberCard}" Margin="0,0,8,10">
+                                <StackPanel>
+                                    <TextBlock Text="⚡ Pro Tournament (Mongraal)" FontSize="14" FontWeight="Bold" Foreground="#38BDF8"/>
+                                    <TextBlock Text="FilterKeys 150ms • Nagle Off • 0.5ms Timer • High Priority" FontSize="11" Foreground="#64748B" Margin="0,4,0,12"/>
+                                    <Button Content="Активировать пресет" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="PresetMongraal_Click"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CyberCard}" Margin="8,0,0,10">
+                                <StackPanel>
+                                    <TextBlock Text="⚡ Maximum FPS (Endgame)" FontSize="14" FontWeight="Bold" Foreground="#34D399"/>
+                                    <TextBlock Text="Stretched 1440x1080 • CPU Unpark • Engine.ini • GameDVR Off" FontSize="11" Foreground="#64748B" Margin="0,4,0,12"/>
+                                    <Button Content="Активировать пресет" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="PresetEndgame_Click"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CyberCard}" Margin="0,0,8,0">
+                                <StackPanel>
+                                    <TextBlock Text="⚡ Balanced (Streaming)" FontSize="14" FontWeight="Bold" Foreground="#A78BFA"/>
+                                    <TextBlock Text="Native 1920x1080 • Stable Timers • Google DNS" FontSize="11" Foreground="#64748B" Margin="0,4,0,12"/>
+                                    <Button Content="Активировать пресет" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="PresetBalanced_Click"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CyberCard}" Margin="8,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="⚡ Default Safe" FontSize="14" FontWeight="Bold" Foreground="#FBBF24"/>
+                                    <TextBlock Text="Стандартные параметры системы с базовым ускорением" FontSize="11" Foreground="#64748B" Margin="0,4,0,12"/>
+                                    <Button Content="Активировать пресет" Style="{StaticResource CyberButtonPrimary}" Height="36" Click="PresetSafe_Click"/>
+                                </StackPanel>
+                            </Border>
+                        </UniformGrid>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ========================================================== -->
+                <!-- 9. ВКЛАДКА: РАДАР ЗАДЕРЖКИ (PING RADAR) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewPing" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,14">
+                            <StackPanel>
+                                <TextBlock Text="📶 ЖИВОЙ РАДАР ПИНГА СЕРВЕРОВ (AWS &amp; VALVE)" FontSize="18" FontWeight="Black" Foreground="#F8FAFC"/>
+                                <TextBlock Text="Многопоточный опрос турнирных и игровых кластеров." FontSize="12" Foreground="#94A3B8" Margin="0,3,0,0"/>
+                            </StackPanel>
+                            <Button x:Name="PingScanBtn" Content="⚡ ПРОВЕРИТЬ ВСЕ РЕГИОНЫ" Style="{StaticResource CyberButtonPrimary}" HorizontalAlignment="Right" Height="38" Click="RunPingScan_Click"/>
+                        </Grid>
+
+                        <Border Style="{StaticResource CyberCard}">
+                            <StackPanel>
+                                <Grid Margin="0,8">
+                                    <StackPanel Width="240" HorizontalAlignment="Left">
+                                        <TextBlock Text="Европа (Франкфурт)" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Главный турнирный кластер EU" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <ProgressBar x:Name="PingBarEu" Height="10" Margin="250,0,100,0" VerticalAlignment="Center" Background="#182234" Foreground="#10B981" Value="0"/>
+                                    <TextBlock x:Name="PingTextEu" Text="-- мс" FontSize="13" FontWeight="Bold" Foreground="#34D399" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333"/>
+
+                                <Grid Margin="0,8">
+                                    <StackPanel Width="240" HorizontalAlignment="Left">
+                                        <TextBlock Text="Google DNS (8.8.8.8)" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Игровой шлюз Anycast" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <ProgressBar x:Name="PingBarGoogle" Height="10" Margin="250,0,100,0" VerticalAlignment="Center" Background="#182234" Foreground="#10B981" Value="0"/>
+                                    <TextBlock x:Name="PingTextGoogle" Text="-- мс" FontSize="13" FontWeight="Bold" Foreground="#34D399" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333"/>
+
+                                <Grid Margin="0,8">
+                                    <StackPanel Width="240" HorizontalAlignment="Left">
+                                        <TextBlock Text="Cloudflare DNS (1.1.1.1)" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Быстрый резервный DNS" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <ProgressBar x:Name="PingBarCf" Height="10" Margin="250,0,100,0" VerticalAlignment="Center" Background="#182234" Foreground="#10B981" Value="0"/>
+                                    <TextBlock x:Name="PingTextCf" Text="-- мс" FontSize="13" FontWeight="Bold" Foreground="#34D399" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333"/>
+
+                                <Grid Margin="0,8">
+                                    <StackPanel Width="240" HorizontalAlignment="Left">
+                                        <TextBlock Text="Восток США (Вирджиния)" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Кластер NA-East" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <ProgressBar x:Name="PingBarNaEast" Height="10" Margin="250,0,100,0" VerticalAlignment="Center" Background="#182234" Foreground="#F59E0B" Value="0"/>
+                                    <TextBlock x:Name="PingTextNaEast" Text="-- мс" FontSize="13" FontWeight="Bold" Foreground="#FBBF24" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </Grid>
+                                <Border Height="1" Background="#182333"/>
+
+                                <Grid Margin="0,8">
+                                    <StackPanel Width="240" HorizontalAlignment="Left">
+                                        <TextBlock Text="Запад США (Орегон)" FontSize="12" FontWeight="Bold" Foreground="#F8FAFC"/>
+                                        <TextBlock Text="Кластер NA-West" FontSize="10" Foreground="#64748B"/>
+                                    </StackPanel>
+                                    <ProgressBar x:Name="PingBarNaWest" Height="10" Margin="250,0,100,0" VerticalAlignment="Center" Background="#182234" Foreground="#EF4444" Value="0"/>
+                                    <TextBlock x:Name="PingTextNaWest" Text="-- мс" FontSize="13" FontWeight="Bold" Foreground="#EF4444" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ========================================================== -->
+                <!-- 10. ВКЛАДКА: ОЧИСТКА КЭША (CLEANUP) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewCleanup" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <TextBlock Text="🧹 ОЧИСТКА КЭША ШЕЙДЕРОВ И ВРЕМЕННЫХ ФАЙЛОВ" FontSize="18" FontWeight="Black" Foreground="#F8FAFC" Margin="0,0,0,14"/>
+
+                        <Border Style="{StaticResource CyberCard}" Margin="0,0,0,16">
+                            <StackPanel>
+                                <TextBlock Text="Глубокая очистка игрового мусора и повреждённых шейдеров" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,8"/>
+                                <TextBlock Text="Безопасно удаляет устаревший кэш DirectX / NVIDIA GLCache / AMD DxCache, накопившиеся crash-логи и временные файлы для устранения микрофризов." FontSize="11" Foreground="#94A3B8" TextWrapping="Wrap" Margin="0,0,0,14"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="🧹 ОЧИСТИТЬ КЭШ ШЕЙДЕРОВ" Style="{StaticResource CyberButtonPrimary}" Height="40" Margin="0,0,12,0" Click="CleanShaders_Click"/>
+                                    <TextBlock x:Name="CleanShadersStatus" Text="Готов к очистке" FontSize="12" Foreground="#64748B" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CyberCard}">
+                            <StackPanel>
+                                <TextBlock Text="⚡ Мгновенный сброс оперативной памяти (RAM Flush)" FontSize="13" FontWeight="Bold" Foreground="#A78BFA" Margin="0,0,0,8"/>
+                                <TextBlock Text="Принудительная сборка мусора и очистка рабочих наборов (Working Set Trim) для всех фоновых процессов. Высвобождает сотни мегабайт ОЗУ." FontSize="11" Foreground="#94A3B8" TextWrapping="Wrap" Margin="0,0,0,14"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Button Content="⚡ СБРОС ОПЕРАТИВНОЙ ПАМЯТИ" Style="{StaticResource CyberButtonPrimary}" Height="40" Margin="0,0,12,0" Click="FlushRamAction_Click"/>
+                                    <TextBlock x:Name="FlushRamStatus" Text="Готов к сбросу памяти" FontSize="12" Foreground="#64748B" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <!-- ========================================================== -->
+                <!-- 11. ВКЛАДКА: ОТКАТ ПАРАМЕТРОВ (RESTORE) -->
+                <!-- ========================================================== -->
+                <ScrollViewer x:Name="ViewRestore" Visibility="Collapsed" VerticalScrollBarVisibility="Auto" Padding="20">
+                    <StackPanel>
+                        <Border Style="{StaticResource CyberCard}">
+                            <StackPanel>
+                                <TextBlock Text="🛡️ ВОССТАНОВЛЕНИЕ ЗАВОДСКИХ НАСТРОЕК WINDOWS" FontSize="17" FontWeight="Black" Foreground="#F8FAFC" Margin="0,0,0,10"/>
+                                <TextBlock Text="В один клик верните любые параметры системы в исходное состояние Microsoft:&#x0a;• Схема питания Windows возвращается в «Сбалансированная»&#x0a;• Сетевой стек TCP/IP и алгоритм Nagle сбрасываются к стандартам&#x0a;• DNS возвращается в автоматический режим (DHCP провайдера)&#x0a;• Клавиатура и таймеры возвращаются к стандартным задержкам Windows&#x0a;• Стандартные кривые мыши и службы GameDVR восстанавливаются" FontSize="12" Foreground="#94A3B8" TextWrapping="Wrap" Margin="0,0,0,18"/>
+                                <Button Content="ВЕРНУТЬ ВСЕ НАСТРОЙКИ WINDOWS ПО УМОЛЧАНИЮ" Style="{StaticResource CyberButtonDanger}" Height="44" HorizontalAlignment="Left" Click="RestoreWindowsDefaults_Click"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+
+        <!-- МОДАЛЬНОЕ ОКНО ПЕРЕИМЕНОВАНИЯ ИГРЫ -->
+        <Grid x:Name="RenameModal" Visibility="Collapsed" Grid.ColumnSpan="2" Background="#D8050810">
+            <Border Width="440" Background="#0C1322" BorderBrush="#38BDF8" BorderThickness="1.5" CornerRadius="14" Padding="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="✏️ Переименовать игру" FontSize="16" FontWeight="Black" Foreground="#FFFFFF" Margin="0,0,0,6"/>
+                    <TextBlock Text="Введите новое название игры для отображения в VORTEX:" FontSize="11" Foreground="#94A3B8" Margin="0,0,0,12"/>
+                    <TextBox x:Name="RenameTextBox" Style="{StaticResource CyberTextBox}" Height="38" FontSize="13" Margin="0,0,0,18" KeyDown="RenameTextBox_KeyDown"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Отмена" Click="RenameCancel_Click" Style="{StaticResource CyberButtonSecondary}" Margin="0,0,8,0" Width="90"/>
+                        <Button Content="Сохранить" Click="RenameSave_Click" Style="{StaticResource CyberButtonPrimary}" Width="110"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- МОДАЛЬНОЕ КИБЕР-ОКНО УВЕДОМЛЕНИЙ VORTEX (ВМЕСТО БЕЛЫХ ОКОН WINDOWS) -->
+        <Grid x:Name="CyberAlertModal" Visibility="Collapsed" Grid.ColumnSpan="2" Background="#D8050810">
+            <Border Width="480" Background="#0C1322" BorderBrush="#38BDF8" BorderThickness="1.5" CornerRadius="14" Padding="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <TextBlock x:Name="AlertModalTitle" Text="VORTEX" FontSize="16" FontWeight="Black" Foreground="#FFFFFF" Margin="0,0,0,8"/>
+                    <TextBlock x:Name="AlertModalMessage" Text="Сообщение" FontSize="12" Foreground="#CBD5E1" TextWrapping="Wrap" LineHeight="18" Margin="0,0,0,20"/>
+                    <Button Content="ПОНЯТНО" Click="AlertModalOk_Click" Style="{StaticResource CyberButtonPrimary}" HorizontalAlignment="Right" Width="120" Height="36"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        </Grid>
+    </Border>
+</Window>
