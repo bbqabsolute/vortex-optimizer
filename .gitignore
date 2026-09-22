@@ -18,3 +18,4 @@ build/
 *.log
 startup_log.txt
 *.tmp
+*.zip
